@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function loadPlayersFromAPI() {
         try {
-            const response = await fetch('https://ranking-cartofut.onrender.com');
+            const response = await fetch('https://ranking-cartofut.onrender.com/api/cartola/mercado');
             if (!response.ok) {
                 throw new Error(`Erro ao carregar jogadores: ${response.statusText}`);
             }
