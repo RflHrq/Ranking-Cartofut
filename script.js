@@ -140,48 +140,53 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-   async function loadPlayersFromAPI() {
-    try {
-        const response = await fetch('http://localhost:3000/api/cartola/mercado');
-        if (!response.ok) {
-            throw new Error(`Erro ao carregar jogadores: ${response.statusText}`);
+    async function loadPlayersFromAPI() {
+        try {
+            const response = await fetch('https://ranking-cartofut.onrender.com');
+            if (!response.ok) {
+                throw new Error(`Erro ao carregar jogadores: ${response.statusText}`);
+            }
+            const data = await response.json();
+
+            clubesData = data.clubes;
+            const atletasArray = Object.values(data.atletas);
+
+            // 🔹 Atualiza o título da rodada (maior rodada_id dos jogadores + 1)
+            const mainTitleRound = document.getElementById('main-site-title-round');
+            if (mainTitleRound && atletasArray.length > 0) {
+                const maiorRodada = Math.max(...atletasArray.map(atleta => atleta.rodada_id));
+                mainTitleRound.textContent = `Ranking da Rodada ${maiorRodada + 1}`;
+            }
+
+            // 🔹 Filtra jogadores pela posição vinda do <body data-posicao-id="">
+            const jogadoresDaPosicao = atletasArray.filter(atleta => atleta.posicao_id === posicaoId);
+
+            allPlayers = jogadoresDaPosicao.map(atleta => {
+                const clubeId = atleta.clube_id;
+                const clubeInfo = clubesData[clubeId];
+                const clubName = clubeInfo ? (clubeInfo.nome || clubeInfo.nome_fantasia) : `ID do Clube: ${clubeId}`;
+                const statusInfo = statusMapping[atleta.status_id] || { text: "Desconhecido", color: "lightgray" };
+
+                return {
+                    id: atleta.atleta_id.toString(),
+                    name: atleta.apelido,
+                    club: clubName,
+                    status_id: atleta.status_id,
+                    status_text: statusInfo.text,
+                    status_color: statusInfo.color,
+                    preco_num: atleta.preco_num,
+                    clube_id: clubeId
+                };
+            }).sort((a, b) => a.name.localeCompare(b.name));
+
+            // 🔹 Continua fluxo normal
+            loadState(); 
+            updatePlayerList();
+
+        } catch (error) {
+            console.error('Erro ao carregar jogadores da API do Cartola:', error);
         }
-        const data = await response.json();
-        clubesData = data.clubes;
-        const atletasArray = Object.values(data.atletas);
-
-        // 🔹 Atualiza o título da rodada
-        const mainTitleRound = document.getElementById('main-site-title-round');
-        if (mainTitleRound && atletasArray.length > 0) {
-            const maiorRodada = Math.max(...atletasArray.map(atleta => atleta.rodada_id));
-            mainTitleRound.textContent = `Ranking da Rodada ${maiorRodada + 1}`;
-        }
-
-        const jogadoresDaPosicao = atletasArray.filter(atleta => atleta.posicao_id === posicaoId);
-
-        allPlayers = jogadoresDaPosicao.map(atleta => {
-            const clubeId = atleta.clube_id;
-            const clubeInfo = clubesData[clubeId];
-            const clubName = clubeInfo ? (clubeInfo.nome || clubeInfo.nome_fantasia) : `ID do Clube: ${clubeId}`;
-            const statusInfo = statusMapping[atleta.status_id] || { text: "Desconhecido", color: "lightgray" };
-            return {
-                id: atleta.atleta_id.toString(),
-                name: atleta.apelido,
-                club: clubName,
-                status_id: atleta.status_id,
-                status_text: statusInfo.text,
-                status_color: statusInfo.color,
-                preco_num: atleta.preco_num,
-                clube_id: clubeId
-            };
-        }).sort((a, b) => a.name.localeCompare(b.name));
-        
-        loadState(); 
-        updatePlayerList();
-    } catch (error) {
-        console.error('Erro ao carregar jogadores da API do Cartola:', error);
     }
-}
 
 
     document.querySelector('#menu button').addEventListener('click', () => {
