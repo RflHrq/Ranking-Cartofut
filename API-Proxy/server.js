@@ -3,7 +3,8 @@ import fetch from 'node-fetch';
 import cors from 'cors';
 
 const app = express();
-const port = 3000;
+// Use a porta do ambiente, ou 3000 como fallback para desenvolvimento local
+const port = process.env.PORT || 3000;
 
 app.use(cors());
 
@@ -20,4 +21,5 @@ app.get('/api/cartola/mercado', async (req, res) => {
     }
 });
 
-app.listen(port, () => console.log(`Servidor rodando em http://localhost:${port}`));
+// A porta agora é a do ambiente do Render
+app.listen(port, () => console.log(`Servidor rodando na porta ${port}`));
