@@ -1,0 +1,518 @@
+:root {
+    --card-width: 190px;
+    --card-height: 60px;
+    --card-margin: 3px;
+    --status-color-base: transparent;
+}
+
+@font-face {
+    font-family: 'Proxima Nova';
+    font-style: normal;
+    src: url('.../assets/3628-font.otf') format('opentype');
+}
+
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    font-family: Proxima Nova, Arial, sans-serif;
+    text-transform: uppercase;
+}
+
+body {  
+    display: flex;
+    flex-direction: column; /* Coloca os elementos em coluna */
+    min-height: 100vh;
+    background-color:orangered;
+    position: relative; 
+}
+
+.main-content-wrapper {
+    flex-grow: 1; /* Faz com que este elemento cresça para ocupar o espaço extra */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 20px 20px 20px;
+    box-sizing: border-box;
+    width: 100%;
+}
+
+/* Adicione o estilo para o footer */
+.footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    margin-top: auto; /* Esta propriedade é a chave para a mágica! */
+}
+
+.halftone-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+    pointer-events: none;
+    background-color: transparent;
+    opacity: 0.2;
+    transition: none;
+    background-image: radial-gradient(circle, rgba(0, 0, 0, 0.4) 1px, transparent 1px);
+    background-size: 8px 8px;
+}
+
+#main-site-title {
+    color: #313131;
+    text-align: center;
+    width: 100%;
+    font-size: 50px;
+    margin: 0px;
+}
+
+#main-site-title-round {
+    color: #ffffff; 
+    font-style: bold;
+    font-size: 30px;
+    text-align: center;
+    width: 100%;
+    margin: 0px;
+}
+
+
+#rankings-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    justify-content: center;
+    margin-top: 0;
+}
+
+.main-content-containers {
+    display: flex;
+    flex-direction: column; 
+    background-color: #313131;
+    border-radius: 8px;
+    padding: 4px;
+    box-sizing: border-box;
+    min-width: 300px;
+}
+
+.ranking-group-content {
+    display: flex; 
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%; 
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.player-container, .ranking-container {
+    background-color: #545454;
+    box-sizing: border-box;
+    border: none; 
+    padding: 0; 
+}
+
+.player-container h2 {
+    border-right: 3px solid #313131;
+}
+
+.player-container h2,
+.ranking-container h2 {
+    font-size: 14px;
+    background-color: #ff4a31;
+    text-align: center;
+    color: #fff;
+    padding: 7px;
+    margin: 0;
+}
+
+.ranking-container h2 {
+    border-left: 3px solid #313131;
+}
+
+.ranking-title-editable {
+    padding: 8px 10px;  
+    border-radius: 4px;
+    font-size: 20px;
+    font-weight: bold;
+    color:#f5f5f5;
+    text-align: center;
+    background-color: #313131;
+    min-height: 20px;
+    outline: none;
+}
+
+.ranking-title-editable:empty:before {
+    content: attr(data-placeholder);
+    color: #999;
+    font-weight: normal;
+}
+
+.player-card-container {
+    border-right: 3px solid #313131;
+    border-bottom: 1px solid #313131;
+    border-top: none;
+    padding: 10px;
+    box-sizing: border-box;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    min-height: 200px;
+    min-width: calc(var(--card-width) + (2 * var(--card-margin)) + (2 * 10px) + (2 * 1px));
+}
+
+.ranking-card-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-left: 3px solid #313131;
+    border-right: 1px solid #313131;
+    border-bottom: 1px solid #313131;
+    border-top: none;
+    padding-right: 8px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    box-sizing: border-box;
+    flex-grow: 1; 
+    min-height: 200px;
+}
+
+.ranking-slot-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* ✋ Card jogável - Estilo ajustado para o tamanho fixo */
+.card {
+    background-color: #313131;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4);
+    cursor: grab;
+    padding: 0;
+    display: flex;
+    align-items: center; /* Centraliza os itens verticalmente */
+    box-sizing: border-box;
+    position: relative;
+    overflow: hidden;
+    width: var(--card-width);
+    height: var(--card-height);
+}
+
+.fixed-slot .card {
+    margin: 0;
+}
+
+.player-image-container {
+    position: relative;
+    height: 100%;
+    width: 28%;
+    flex-shrink: 0;
+    overflow: hidden;
+    border-top-left-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+
+.player-image-container img {
+    height: 100%;
+    width: auto;
+    display: block;
+    transform: translateX(-10%);
+}
+
+.player-info-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1; /* Permite que este elemento cresça para preencher o espaço */
+    height: 100%;
+    padding: 10px 0;
+    text-transform: uppercase;
+    z-index: 2;
+    /* Estilos para lidar com nomes longos sem empurrar outros elementos */
+    white-space: normal; /* Permite que o texto quebre em várias linhas */
+    overflow: hidden; /* Esconde o texto que ultrapassa o limite */
+    text-overflow: ellipsis; /* Adiciona '...' no final do texto cortado */
+    min-width: 0; /* Garante que o item encolha conforme necessário */
+}
+
+.player-name {
+    font-weight: bold;
+    color: white;
+    font-size: 13px;
+    line-height: 1.2;
+}
+
+.player-price {
+    font-weight: normal;
+    color: #c3c3c3;
+    font-size: 12px;
+    line-height: 1;
+    margin-top: 5px;
+}
+
+.status-badge-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center; /* Alinha o escudo e a luz no centro */
+    height: 100%;
+    position: relative;
+    padding: 8px;
+    position: relative;
+    z-index: 2;
+    /* Propriedades para fixar o tamanho do container */
+    width: 20px; /* Define uma largura fixa para o container do escudo */
+    flex-shrink: 0; /* Impede que este elemento encolha */
+}
+
+.dragging-effect {
+    cursor: grabbing;
+    z-index: 1002;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    /* Adicione quaisquer outros estilos para o efeito de arrasto */
+}
+
+.club-badge {
+    width: 25px;
+    padding-top: 6px;
+    padding-left: 3px;
+    height: 25px;
+    object-fit: contain;
+    z-index: 2; /* Garante que o escudo fique sobre a luz */
+}
+
+/* Removendo estilos antigos */
+.card-status-band {
+    display: none;
+}
+
+.card-status-gradient {
+    display: none;
+}
+
+/* Contêiner da luz de status, ajustado para ser posicionado dentro do status-badge-container */
+.status-light-container {
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(30%, -30%); /* desloca para fora no canto */
+    z-index: 0; /* atrás do texto e escudo */
+    width: 140px;
+    height: 140px;
+    pointer-events: none;
+}
+
+.status-light {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    opacity: 0.5;
+    transition: opacity 0.25s ease-in;
+}
+
+.card:hover .status-light {
+    opacity: 0.8;
+}
+
+/* Definindo os gradientes para cada status */
+/* Status: Provável (Verde) */
+.status-provável {
+    background: radial-gradient(
+        circle,
+        #0080008f 0%,
+        #313131 60%,
+        #313131 100%
+    );
+}
+
+/* Status: Dúvida (Amarelo) */
+.status-dúvida {
+    background: radial-gradient(
+        circle,
+        #ffc7008f 0%,
+        #313131 60%,
+        #313131 100%
+    );
+}
+
+/* Status: Suspenso (Vermelho) */
+.status-suspenso {
+    background: radial-gradient(
+        circle,
+        #ff00008f 0%,
+        #313131 60%,
+        #313131 100%
+    );
+}
+
+/* Status: Contundido (Vinho) */
+.status-contundido {
+    background: radial-gradient(
+        circle,
+        #8000008f 0%,
+        #313131 60%,
+        #313131 100%
+    );
+}
+
+/* Status: Nulo (Cinza) */
+.status-nulo {
+    background: radial-gradient(
+        circle,
+        #8080808f 0%,
+        #313131 60%,
+        #313131 100%
+    );
+}
+
+.fixed-slot {
+    border-radius: 8px;
+    border: 1px double #6e6e6e;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: var(--card-width);
+    height: var(--card-height);
+    background-color: #313131;
+    box-sizing: border-box;
+}
+
+.slot-position {
+    font-size: 1.2em;
+    color: #f5f5f5;
+    font-weight: bold;
+    width: 23px;
+    text-align: right;
+}
+
+/* 🟢 Feedback visual ao soltar */
+.fixed-slot.drag-over {
+    border: 2px dashed #4CAF50;
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: none;
+    z-index: 1000;
+}
+
+.menu {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    z-index: 1001;
+    display: none;
+    max-width: 90%;
+    box-sizing: border-box;
+}
+
+.menu h2 {
+    margin-top: 0;
+}
+
+.menu ul {
+    list-style-type: none;
+    padding: 0;
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #eee;
+    margin-top: 10px;
+}
+
+.menu li {
+    padding: 10px 0;
+    cursor: pointer;
+    border-bottom: 1px solid #eee;
+}
+
+.menu li:last-child {
+    border-bottom: none;
+}
+
+.menu li.selected {
+    background-color: #e0e0e0;
+}
+
+.menu input[type="text"] {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.menu button {
+    padding: 10px 15px;
+    background-color: orangered;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.menu button:hover {
+    background-color: darkorange;
+}
+
+.menu .close-button {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 20px;
+    width: fit-content;
+}
+
+.footer {
+    background-color: #333;
+    color: white;
+    text-align: center;
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.ranking-buttons-container {
+    display: flex;
+    flex-direction: column; 
+    align-items: center;    
+    gap: 15px;            
+    margin-top: 50px;
+}
+
+.ranking-button {
+    padding: 15px 30px;
+    background-color: #313131;
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    /* Adicionado para garantir que todos os botões tenham a mesma largura */
+    width: 250px; /* ou outro valor de sua escolha */
+    text-align: center; /* Centraliza o texto dentro do botão */
+}

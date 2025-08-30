@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-1.0">
+    <title>Ranking Atacantes</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body body data-posicao-id="5">
+    <h2 id="main-site-title-round">Ranking da Rodada 20</h2>
+    <p id="main-site-title">Atacantes</p>
+
+    <div class="main-content-wrapper">
+        <template id="ranking-template">
+            <div class="main-content-containers">
+                <div class="ranking-title-editable" contenteditable="true" data-placeholder="Nome do Ranking"></div>
+
+                <div class="ranking-group-content">
+                    <div class="container player-container">
+                        <h2>Jogadores</h2>
+                        <div class="player-card-container draggable-container"></div>
+                    </div>
+
+                    <div class="container ranking-container">
+                        <h2>Ranking</h2>
+                        <div class="ranking-card-wrapper"></div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <div id="rankings-wrapper"></div>
+    </div>
+    <div class="footer">
+        <p>Desenvolvido por Rafael Santos</p>
+        <p>© 2025 Cartofut</p>
+    </div>
+
+    <div class="halftone-background"></div>
+
+    <div class="menu" id="menu">
+        <h2>Seja bem-vindo</h2>
+        <label for="wrapperNumber">Quantidade de Rankings:</label>
+        <select id="wrapperNumber">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+        </select>
+        <div id="wrapperNameRankingContainer"></div>
+        <label for="cardNumber">Quantidade de Jogadores:</label>
+        <select id="cardNumber">
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+        </select>
+        <button onclick="setupCards()">Configurar</button>
+        <button class="close-button" onclick="closeMenu('menu')">Fechar</button>
+    </div>
+
+    <div class="menu" id="select-menu" style="display: none;">
+        <h2 id="select-menu-title">Selecionar Jogadores</h2>
+        <input type="text" id="player-search" placeholder="Buscar jogador pelo nome">
+        <ul id="player-list"></ul>
+        <button class="close-button" onclick="closeMenu('select-menu')">Fechar</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
