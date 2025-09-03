@@ -1,7 +1,6 @@
 import express from 'express';
 import fetch from 'node-fetch';
 import cors from 'cors';
-import AbortController from 'abort-controller';
 
 const app = express();
 const port = 3000;
